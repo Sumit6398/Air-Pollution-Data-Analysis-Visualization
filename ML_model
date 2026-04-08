@@ -1,0 +1,19 @@
+X = data[["pollutant_min","pollutant_max"]]
+y = data["pollutant_avg"]
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train ,y_train)
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+print(f"Mean Squared Error : {mse:.4f}")
+print(f"Root Mean Sq Error : {rmse:.4f}")
+
+result = pd.DataFrame({
+    "Actual": y_test.reset_index(drop=True),
+    "Predicted": y_pred
+})
+print(result.head())
