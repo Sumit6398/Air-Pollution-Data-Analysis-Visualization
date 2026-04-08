@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+data = pd.read_csv("C:/Users/sumit/Downloads/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69 (1).csv")
+
+print(data.info())
+print(data.head())
+print(data.tail())
+print(data.shape)
+print(data.columns)
+print(data.describe())
+
+print(data.isna().sum())
+
+data["pollutant_min"] = data["pollutant_min"].fillna(data["pollutant_min"].mean())
+data["pollutant_max"] = data["pollutant_max"].fillna(data["pollutant_max"].mean())
+data["pollutant_avg"] = data["pollutant_avg"].fillna(data["pollutant_avg"].mean())
+
+print(data.isna().sum())
+
+# Check Duplicates
+print("Duplicate rows:", data.duplicated().sum())
+data = data.drop_duplicates() 
+
+# Data Type Conversion
+data["last_update"]= pd.to_datetime(data["last_update"])
