@@ -1,0 +1,76 @@
+# OBJECTIVE 1 — Top 10 Most Polluted Cities
+
+city_pollution = (
+    data.groupby("city")["pollutant_avg"]
+    .mean()
+    .sort_values(ascending=False)
+)
+top_cities = city_pollution.head(10)
+
+plt.figure(figsize=(12, 5))
+top_cities.plot(kind="bar", color="tomato", edgecolor="black")
+plt.title("Top 10 Most Polluted Cities", fontsize=14)
+plt.ylabel("Average Pollution")
+plt.xlabel("City")
+plt.tight_layout()          # FIX 5: prevent label cutoff
+plt.show()
+# Conclusion: Some cities show significantly higher pollution levels,
+# indicating urban pollution hotspots.
+
+# OBJECTIVE 2 — Pollution Levels by State
+
+state_pollution = (
+    data.groupby("state")["pollutant_avg"]
+    .mean()
+    .sort_values(ascending=False)
+)
+
+plt.figure(figsize=(12, 5))
+state_pollution.head(10).plot(kind="bar", color="steelblue", edgecolor="black")
+plt.title("Top 10 Most Polluted States", fontsize=14)
+plt.ylabel("Average Pollution")
+plt.xlabel("State")
+plt.tight_layout()
+plt.show()
+# Conclusion: Certain states have consistently higher pollution,
+# possibly due to industrialization or traffic density.
+
+# OBJECTIVE 3 — Average Pollution by Pollutant Type
+
+pollutant = data.groupby("pollutant_id")["pollutant_avg"].mean()
+
+plt.pie(pollutant, labels=pollutant.index, autopct='%1.1f%%')
+plt.title("Pollution Contribution by Pollutant")
+plt.show()
+# Conclusion: Some pollutants (like PM2.5 or NO2) contribute more
+# heavily to air pollution than others.
+
+# OBJECTIVE 4 — Correlation Heatmap
+
+corr = data[["pollutant_min", "pollutant_max", "pollutant_avg"]].corr()
+
+plt.figure(figsize=(6, 4))
+sns.heatmap(
+    corr,
+    annot=True,          # FIX 4: show correlation values
+    fmt=".2f",
+    cmap="coolwarm",
+    linewidths=0.5
+)
+plt.title("Correlation Heatmap", fontsize=14)
+plt.tight_layout()
+plt.show()
+# Conclusion: Strong correlation indicates that pollution levels
+# remain consistently high or low across all three measurements.
+
+# OBJECTIVE 5 — Distribution of Pollution Levels
+
+plt.figure(figsize=(8, 4))
+plt.hist(data["pollutant_avg"], bins=30, color="darkorange", edgecolor="black")
+plt.title("Distribution of Pollution Levels", fontsize=14)
+plt.xlabel("Pollution Average")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
+# Conclusion: This distribution helps identify pollution hotspots.
+# Government can prioritize action in high-risk areas.
